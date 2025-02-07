@@ -4,6 +4,7 @@ import { useRef, useState, useMemo } from "react"
 import { Canvas, useFrame, useLoader } from "@react-three/fiber"
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei"
 import * as THREE from "three"
+import { Vector2 } from "three"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -24,26 +25,29 @@ function createBottleGeometry() {
   // ボトルの底部
   points.push(new THREE.Vector2(0, 0))
   points.push(new THREE.Vector2(0.4, 0))
+  points.push(new THREE.Vector2(0.4, 0))
 
   // ボトルの胴体
   points.push(new THREE.Vector2(0.4, bodyHeight * 0.1))
   points.push(new THREE.Vector2(0.38, bodyHeight * 0.3))
   points.push(new THREE.Vector2(0.36, bodyHeight * 0.7))
   points.push(new THREE.Vector2(0.34, bodyHeight))
+  points.push(new THREE.Vector2(0.34, bodyHeight))
 
   // ボトルの肩
   points.push(new THREE.Vector2(0.3, bodyHeight + 0.1))
   points.push(new THREE.Vector2(0.2, bodyHeight + 0.2))
+  points.push(new THREE.Vector2(0.2, bodyHeight + 0.2))
 
   // ボトルの首（長くなった）
-  points.push(new THREE.Vector2(0.18, bodyHeight + 0.3))
-  points.push(new THREE.Vector2(0.18, totalHeight - 0.2))
-  points.push(new THREE.Vector2(0.15, totalHeight - 0.1))
-  points.push(new THREE.Vector2(0.14, totalHeight))
-  points.push(new THREE.Vector2(0, totalHeight))
+  points.push(new THREE.Vector2(0.15, bodyHeight + 0.3))
+  points.push(new THREE.Vector2(0.15, totalHeight - 0.2))
+  points.push(new THREE.Vector2(0.13, totalHeight - 0.1))
+  points.push(new THREE.Vector2(0.13, totalHeight - 0.1))
 
   return new THREE.LatheGeometry(points, 32)
 }
+
 
 function Bottle({ texture }: { texture: THREE.Texture }) {
   const mesh = useRef<THREE.Mesh>(null)
@@ -55,38 +59,11 @@ function Bottle({ texture }: { texture: THREE.Texture }) {
     }
   })
 
-  // カスタムシェーダーマテリアルを作成
-  const material = useMemo(() => {
-    return new THREE.ShaderMaterial({
-      uniforms: {
-        texture: { value: texture },
-      },
-      vertexShader: `
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform sampler2D texture;
-        varying vec2 vUv;
-        void main() {
-          // ラベルを胴体の側面のみに表示
-          if (vUv.y > 0.1 && vUv.y < 0.7) {
-            // X座標を調整してテクスチャを横方向に引き伸ばす
-            vec2 adjustedUV = vec2(vUv.x * 0.5, (vUv.y - 0.1) / 0.6);
-            gl_FragColor = texture2D(texture, adjustedUV);
-          } else {
-            // ラベル以外の部分は薄い緑色（シャンパンボトルの色）
-            gl_FragColor = vec4(0.8, 0.9, 0.8, 1.0);
-          }
-        }
-      `,
-    })
-  }, [texture])
-
-  return <mesh ref={mesh} geometry={geometry} material={material} />
+  return (
+    <mesh ref={mesh} geometry={geometry} position={[0, -1.5, 0]}>
+      <meshPhongMaterial map={texture} />
+    </mesh>
+  )
 }
 
 interface BottlePreviewProps {
@@ -133,7 +110,7 @@ export default function BottlePreview({ selectedLabel, setSelectedLabel }: Bottl
           <Label>テンプレート選択</Label>
           <RadioGroup
             defaultValue={templates[0].id}
-            onValueChange={(value) => {
+            onValueChange={(value: string) => {
               const template = templates.find((t) => t.id === value)
               if (template) {
                 handleTemplateChange(template.url)
