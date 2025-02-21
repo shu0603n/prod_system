@@ -1,14 +1,12 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, useEffect } from "react"
+import { useState } from "react"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import CssBaseline from "@mui/material/CssBaseline"
 import Container from "@mui/material/Container"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
-import Button from "@mui/material/Button"
-import DeleteIcon from "@mui/icons-material/Delete"
 import ProductSelection from "./components/ProductSelection"
 import QuantityInput from "./components/QuantityInput"
 import OptionsSelection from "./components/OptionsSelection"
@@ -16,30 +14,21 @@ import TotalCalculation from "./components/TotalCalculation"
 import AddOrderButton from "./components/AddOrderButton"
 import StepOverlay from "./components/StepOverlay"
 import { options, Order, Product, Option, products, stepTexts } from "./data/data"
+import { Chip, IconButton, Accordion, AccordionSummary, AccordionDetails } from "@mui/material"
+import CloseIcon from '@mui/icons-material/Close';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const theme = createTheme()
-
 
 export default function App() {
   const [orders, setOrders] = useState<Order[]>([{ product: null, quantity: 1, options: [options[0]] }])
   const [currentStep, setCurrentStep] = useState(1)
-  const [overlayKey, setOverlayKey] = useState(0)
+  const [expandedIndex, setExpandedIndex] = useState<number | false>(0)
 
-  const refs = {
-    step1: useRef<HTMLDivElement | null>(null),
-    step2: useRef<HTMLDivElement | null>(null),
-    step3: useRef<HTMLDivElement | null>(null),
-    step4: useRef<HTMLDivElement | null>(null),
-    step5: useRef<HTMLDivElement | null>(null),
+  const handleAccordionChange = (index: number) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpandedIndex(isExpanded ? index : false)
   }
-
-  const scrollToRef = (ref: React.RefObject<HTMLDivElement | null>) => {
-    ref.current?.scrollIntoView({ behavior: "smooth" })
-  }
-
-  useEffect(() => {
-    setOverlayKey((prevKey) => prevKey + 1)
-  }, [])
 
   const handleProductSelect = (index: number, product: Product) => {
     const newOrders = [...orders]
@@ -47,7 +36,6 @@ export default function App() {
     setOrders(newOrders)
     if (currentStep === 1) {
       setCurrentStep(2)
-      scrollToRef(refs.step2)
     }
   }
 
@@ -57,7 +45,6 @@ export default function App() {
     setOrders(newOrders)
     if (currentStep === 2) {
       setCurrentStep(3)
-      scrollToRef(refs.step3)
     }
   }
 
@@ -67,14 +54,14 @@ export default function App() {
     setOrders(newOrders)
     if (currentStep === 3) {
       setCurrentStep(4)
-      scrollToRef(refs.step4)
     }
   }
 
   const handleAddOrder = () => {
-    setOrders([...orders, { product: null, quantity: 1, options: [options[0]] }])
+    const newOrders = [...orders, { product: null, quantity: 1, options: [options[0]] }]
+    setOrders(newOrders)
+    setExpandedIndex(newOrders.length - 1)
     setCurrentStep(1)
-    // scrollToRef(refs.step1)
   }
 
   const handleDeleteOrder = (index: number) => {
@@ -82,6 +69,8 @@ export default function App() {
     setOrders(newOrders)
     if (newOrders.length === 0) {
       handleAddOrder()
+    } else {
+      setExpandedIndex(0)
     }
   }
 
@@ -99,61 +88,50 @@ export default function App() {
           {!isStep1Completed && <StepOverlay step={1} text={stepTexts[0]} />}
 
           {orders.map((order, index) => (
-            <Box key={index} sx={{ mb: 4, position: "relative" }}>
-              <Typography variant="h5" component="h2" gutterBottom>
-                注文 {index + 1}
-              </Typography>
-
-              <Button
-                variant="outlined"
-                color="error"
-                startIcon={<DeleteIcon />}
-                onClick={() => handleDeleteOrder(index)}
-                sx={{ position: "absolute", top: 0, right: 0 }}
-              >
-                削除
-              </Button>
-
-              <Box ref={index === 0 ? refs.step1 : undefined}>
+            <Accordion key={index} expanded={expandedIndex === index} onChange={handleAccordionChange(index)}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Chip
+                  icon={<ShoppingCartIcon />}
+                  label={`注文 ${index + 1}`}
+                  color="primary"
+                  sx={{ fontSize: '1rem', fontWeight: 'bold', px: 2, py: 2, borderRadius: 2, boxShadow: 2 }}
+                />
+                <IconButton color="error" onClick={() => handleDeleteOrder(index)} sx={{ ml: 2 }}>
+                  <CloseIcon />
+                </IconButton>
+              </AccordionSummary>
+              <AccordionDetails>
                 <ProductSelection
                   products={products}
                   selectedProduct={order.product}
                   onSelect={(product) => handleProductSelect(index, product)}
                 />
-              </Box>
-
-              {order.product && (
-                <>
-                  <Box ref={index === 0 ? refs.step2 : undefined}>
+                {order.product && (
+                  <>
                     <QuantityInput
                       quantity={order.quantity}
                       onChange={(quantity) => handleQuantityChange(index, quantity)}
                     />
-                  </Box>
-
-                  <Box ref={index === 0 ? refs.step3 : undefined}>
                     <OptionsSelection
                       options={options}
                       selectedOptions={order.options}
                       onSelect={(selectedOptions) => handleOptionSelect(index, selectedOptions)}
                     />
-                  </Box>
-                </>
-              )}
-            </Box>
+                  </>
+                )}
+              </AccordionDetails>
+            </Accordion>
           ))}
-          <Box ref={refs.step5}>
+
+          <Box sx={{ mt: 4 }}>
             <AddOrderButton onClick={handleAddOrder} />
           </Box>
 
-          <Box ref={refs.step4}>
+          <Box sx={{ mt: 4 }}>
             <TotalCalculation orders={orders} />
           </Box>
-
-
         </Box>
       </Container>
     </ThemeProvider>
   )
 }
-
