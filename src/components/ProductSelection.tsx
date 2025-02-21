@@ -145,6 +145,7 @@ export default function ProductSelection({ products, selectedProduct, onSelect }
                     </TableRow>
                   ))}
                 </TableHead>
+
                 <TableBody {...getTableBodyProps()}>
                   {rows.map((row: any, index: number) => {
                     prepareRow(row);
