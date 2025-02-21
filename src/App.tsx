@@ -51,7 +51,7 @@ const products: Product[] = [
   {
     name: "バーロワイヤル",
     image:
-      "https://storage.googleapis.com/studio-design-asset-files/projects/wQOVJ9RNOD/s-2400x1800_v-frms_webp_7d13dbbd-9731-4de0-8399-49ef672c0a15_middle.webp",
+      "/bottles/BarRoyal.png?height=300&width=200",
     led: "LED対応",
     alcohol: "度数：3.9%",
     volume: "内容量：750ml",
@@ -76,7 +76,7 @@ const products: Product[] = [
   {
     name: "リステル",
     image:
-      "https://storage.googleapis.com/studio-design-asset-files/projects/wQOVJ9RNOD/s-2400x1697_v-frms_webp_e6854bf5-5f42-4af4-8965-900947456123_middle.webp",
+      "/bottles/Listel.png?height=300&width=200",
     led: "LED対応",
     alcohol: "度数：2.5~3.5%",
     volume: "内容量：750ml",
@@ -99,7 +99,7 @@ const products: Product[] = [
   },
   {
     name: "金箔マンズゴールド",
-    image: "/placeholder.svg?height=300&width=200",
+    image: "/bottles/GoldLeaf.png?height=300&width=200",
     led: "LED対応",
     alcohol: "度数：8.5%",
     volume: "内容量：750ml",
@@ -119,7 +119,7 @@ const products: Product[] = [
   },
   {
     name: "プロヴェット",
-    image: "/placeholder.svg?height=300&width=200",
+    image: "/bottles/Momandor.png?height=300&width=200",
     led: "ブリュット：LED非対応、ロゼ：LED対応",
     alcohol: "度数：11.5%",
     volume: "内容量：750ml",
@@ -140,7 +140,7 @@ const products: Product[] = [
   },
   {
     name: "モマンドール",
-    image: "/placeholder.svg?height=300&width=200",
+    image: "/bottles/Momandor.png?height=300&width=200",
     led: "ドライ：LED非対応、ロゼ・アイス：LED対応",
     alcohol: "度数：8.5%",
     volume: "内容量：750ml",
@@ -162,7 +162,7 @@ const products: Product[] = [
   },
   {
     name: "モーヴ",
-    image: "/placeholder.svg?height=300&width=200",
+    image: "/bottles/NonAl.png?height=300&width=200",
     led: "LED非対応",
     alcohol: "度数：ノンアルコール",
     volume: "内容量：750ml",
@@ -205,14 +205,14 @@ export default function App() {
   const [overlayKey, setOverlayKey] = useState(0)
 
   const refs = {
-    step1: useRef<HTMLDivElement>(null),
-    step2: useRef<HTMLDivElement>(null),
-    step3: useRef<HTMLDivElement>(null),
-    step4: useRef<HTMLDivElement>(null),
-    step5: useRef<HTMLDivElement>(null),
+    step1: useRef<HTMLDivElement | null>(null),
+    step2: useRef<HTMLDivElement | null>(null),
+    step3: useRef<HTMLDivElement | null>(null),
+    step4: useRef<HTMLDivElement | null>(null),
+    step5: useRef<HTMLDivElement | null>(null),
   }
 
-  const scrollToRef = (ref: React.RefObject<HTMLDivElement>) => {
+  const scrollToRef = (ref: React.RefObject<HTMLDivElement | null>) => {
     ref.current?.scrollIntoView({ behavior: "smooth" })
   }
 
@@ -253,7 +253,7 @@ export default function App() {
   const handleAddOrder = () => {
     setOrders([...orders, { product: null, quantity: 1, options: [options[0]] }])
     setCurrentStep(1)
-    scrollToRef(refs.step1)
+    // scrollToRef(refs.step1)
   }
 
   const handleDeleteOrder = (index: number) => {
