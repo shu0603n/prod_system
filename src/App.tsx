@@ -321,14 +321,15 @@ export default function App() {
               )}
             </Box>
           ))}
+          <Box ref={refs.step5}>
+            <AddOrderButton onClick={handleAddOrder} />
+          </Box>
 
           <Box ref={refs.step4}>
             <TotalCalculation orders={orders} />
           </Box>
 
-          <Box ref={refs.step5}>
-            <AddOrderButton onClick={handleAddOrder} />
-          </Box>
+
         </Box>
       </Container>
     </ThemeProvider>
