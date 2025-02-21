@@ -58,14 +58,12 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.6",
     "zod": "^3.24.1",
-    "expo": "latest",
-    "three": "latest",
-    "expo-gl": "latest",
-    "expo-asset": "latest",
-    "react-native": "latest",
-    "expo-file-system": "latest",
-    "@react-three/fiber": "latest",
-    "@react-three/drei": "latest"
+    "@types/react": "latest",
+    "@emotion/react": "latest",
+    "@emotion/styled": "latest",
+    "@mui/material-pigment-css": "latest",
+    "@mui/material": "latest",
+    "@mui/icons-material": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
