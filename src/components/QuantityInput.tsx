@@ -15,8 +15,7 @@ export default function QuantityInput({ quantity, onChange }: QuantityInputProps
   <TextField
     type="number"
     value={quantity}
-    onChange={(e) => onChange(Math.max(1, Number.parseInt(e.target.value, 10) || 1))}
-    inputProps={{ min: 1 }}
+    onChange={(e) => onChange(Number(e.target.value?.replace(/[^0-9]/g, '') || 0))}
     fullWidth
     placeholder="本数を入力"
     variant="outlined"

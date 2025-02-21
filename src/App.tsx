@@ -1,12 +1,13 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import CssBaseline from "@mui/material/CssBaseline"
 import Container from "@mui/material/Container"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
+import DeleteIcon from "@mui/icons-material/Delete"
 import ProductSelection from "./components/ProductSelection"
 import QuantityInput from "./components/QuantityInput"
 import OptionsSelection from "./components/OptionsSelection"
@@ -14,7 +15,7 @@ import TotalCalculation from "./components/TotalCalculation"
 import AddOrderButton from "./components/AddOrderButton"
 import StepOverlay from "./components/StepOverlay"
 import { options, Order, Product, Option, products, stepTexts } from "./data/data"
-import { Chip, IconButton, Accordion, AccordionSummary, AccordionDetails } from "@mui/material"
+import { Chip, Accordion, AccordionSummary, AccordionDetails, IconButton } from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -82,7 +83,7 @@ export default function App() {
       <Container maxWidth="md">
         <Box sx={{ my: 4 }}>
           <Typography variant="h4" component="h1" gutterBottom>
-            見積もりシステム
+            料金シミュレーション
           </Typography>
 
           {!isStep1Completed && <StepOverlay step={1} text={stepTexts[0]} />}
@@ -96,9 +97,15 @@ export default function App() {
                   color="primary"
                   sx={{ fontSize: '1rem', fontWeight: 'bold', px: 2, py: 2, borderRadius: 2, boxShadow: 2 }}
                 />
-                <IconButton color="error" onClick={() => handleDeleteOrder(index)} sx={{ ml: 2 }}>
+                <IconButton
+                  component="span"
+                  color="error"
+                  onClick={() => handleDeleteOrder(index)}
+                  sx={{ ml: 2 }}
+                >
                   <CloseIcon />
                 </IconButton>
+
               </AccordionSummary>
               <AccordionDetails>
                 <ProductSelection
