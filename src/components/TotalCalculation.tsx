@@ -98,11 +98,31 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
           </Box>
         </Paper>
       ))}
+
+        <Paper sx={{ mb: 3, p: 3, borderRadius: 2, boxShadow: 3 }}>
+          <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
+            🛍️ 手数料
+          </Typography>
+
+          <Box sx={{ mt: 2, ml: 2 }}>
+            <Typography variant="body2">
+              配送料: ¥1000
+            </Typography>
+          </Box>
+    
+          {/* 小計 */}
+          <Divider sx={{ my: 2 }} />
+          <Box sx={{ ml: 2 }}>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+              小計: ¥{1000}
+            </Typography>
+          </Box>
+        </Paper>
     
       {/* 合計金額 */}
       <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 3, backgroundColor: 'primary.light' }}>
         <Typography variant="h5" sx={{ fontWeight: 'bold', textAlign: 'center', color: 'primary.contrastText' }}>
-          💰 合計 (税込): ¥{totalWithTax.toLocaleString()}
+          💰 合計 : ¥{`${totalWithTax + 1000} (税込)`}
         </Typography>
       </Paper>
     </Box>
