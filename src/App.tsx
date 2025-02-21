@@ -24,7 +24,7 @@ const theme = createTheme()
 
 export default function App() {
   const [orders, setOrders] = useState<Order[]>([{ product: null, quantity: 1, options: [options[0]] }])
-  const [currentStep, setCurrentStep] = useState(1)
+  // const [currentStep, setCurrentStep] = useState(1)
   const [expandedIndex, setExpandedIndex] = useState<number | false>(0)
 
   const handleAccordionChange = (index: number) => (_: React.SyntheticEvent, isExpanded: boolean) => {
@@ -35,34 +35,34 @@ export default function App() {
     const newOrders = [...orders]
     newOrders[index].product = product
     setOrders(newOrders)
-    if (currentStep === 1) {
-      setCurrentStep(2)
-    }
+    // if (currentStep === 1) {
+    //   setCurrentStep(2)
+    // }
   }
 
   const handleQuantityChange = (index: number, quantity: number) => {
     const newOrders = [...orders]
     newOrders[index].quantity = quantity
     setOrders(newOrders)
-    if (currentStep === 2) {
-      setCurrentStep(3)
-    }
+    // if (currentStep === 2) {
+    //   setCurrentStep(3)
+    // }
   }
 
   const handleOptionSelect = (index: number, selectedOptions: Option[]) => {
     const newOrders = [...orders]
     newOrders[index].options = selectedOptions
     setOrders(newOrders)
-    if (currentStep === 3) {
-      setCurrentStep(4)
-    }
+    // if (currentStep === 3) {
+    //   setCurrentStep(4)
+    // }
   }
 
   const handleAddOrder = () => {
     const newOrders = [...orders, { product: null, quantity: 1, options: [options[0]] }]
     setOrders(newOrders)
     setExpandedIndex(newOrders.length - 1)
-    setCurrentStep(1)
+    // setCurrentStep(1)
   }
 
   const handleDeleteOrder = (index: number) => {
