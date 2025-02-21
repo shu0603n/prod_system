@@ -62,6 +62,11 @@ export default function App() {
     const newOrders = [...orders, { product: null, quantity: 1, options: [options[0]] }]
     setOrders(newOrders)
     setExpandedIndex(newOrders.length - 1)
+    // クリック時にiframeのstyleを更新
+    const iframe = document.querySelector('iframe');
+    if(iframe){
+      iframe.style.width = '100vh'; // ここでiframeの幅を更新
+    }
     // setCurrentStep(1)
   }
 
