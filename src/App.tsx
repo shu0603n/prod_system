@@ -15,53 +15,10 @@ import OptionsSelection from "./components/OptionsSelection"
 import TotalCalculation from "./components/TotalCalculation"
 import AddOrderButton from "./components/AddOrderButton"
 import StepOverlay from "./components/StepOverlay"
-import { products } from "./data/data"
+import { options, Order, Product, Option, products, stepTexts } from "./data/data"
 
 const theme = createTheme()
 
-export type PriceRange = {
-  minQuantity: number
-  maxQuantity: number | null
-  price: number
-}
-
-export type Product = {
-  name: string
-  image: string
-  led: string
-  alcohol: string
-  volume: string
-  origin: string
-  varieties: { name: string; description: string }[]
-  description?: string
-  priceRanges: PriceRange[]
-}
-
-export type Option = {
-  name: string
-  price: number
-}
-
-export type Order = {
-  product: Product | null
-  quantity: number
-  options: Option[]
-}
-
-const options: Option[] = [
-  { name: "なし", price: 0 },
-  { name: "LEDライト", price: 300 },
-  { name: "キャップシール変更", price: 300 },
-  { name: "アクリルキーホルダー", price: 300 },
-]
-
-const stepTexts = [
-  "商品を選択してください",
-  "本数を入力してください",
-  "オプションを選択してください",
-  "合計金額を確認してください",
-  "注文を追加しますか？",
-]
 
 export default function App() {
   const [orders, setOrders] = useState<Order[]>([{ product: null, quantity: 1, options: [options[0]] }])
