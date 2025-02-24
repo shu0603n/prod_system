@@ -150,7 +150,7 @@ export default function ProductSelection({ products, selectedProduct, onSelect }
                       {headerGroup.headers.map((column: any) => (
                         <TableCell
                           {...column.getHeaderProps()}
-                          sx={{ width: `${100 / headerGroup.headers.length}%`, textAlign: 'center', paddingLeft:1, paddingRight:1, paddingTop:2, paddingBottom:2}}
+                          sx={{ width: `${100 / headerGroup.headers.length}%`, textAlign: 'center', paddingLeft:0, paddingRight:0, paddingTop:2, paddingBottom:2}}
                         >
                           {column.render("Header")}
                         </TableCell>
@@ -167,7 +167,7 @@ export default function ProductSelection({ products, selectedProduct, onSelect }
                         {row.cells.map((cell: any) => (
                           <TableCell
                             {...cell.getCellProps()}
-                            sx={{ width: `${100 / row.cells.length}%`, textAlign: 'center', paddingLeft:1, paddingRight:1, paddingTop:2, paddingBottom:2 }}
+                            sx={{ width: `${100 / row.cells.length}%`, textAlign: 'center', paddingLeft:0, paddingRight:0, paddingTop:2, paddingBottom:2 }}
                           >
                             {cell.render("Cell")}
                           </TableCell>
