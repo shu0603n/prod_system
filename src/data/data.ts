@@ -23,7 +23,7 @@ export type Option = {
 
 export type Order = {
   product: Product | null
-  quantity: number
+  quantity: number | null
   options: Option[]
 }
 
@@ -35,11 +35,10 @@ export const options: Option[] = [
 ]
 
 export const stepTexts = [
-  "商品を選択してください",
+  "ボトルを選択してください",
   "本数を入力してください",
   "オプションを選択してください",
-  "合計金額を確認してください",
-  "注文を追加しますか？",
+  "合計金額が表示されます。追加の注文がある場合は追加ボタンを押してください。"
 ]
 
 export const products: Product[] = [

@@ -17,8 +17,8 @@ function getPrice(priceRanges: PriceRange[], quantity: number): number {
 export default function TotalCalculation({ orders }: TotalCalculationProps) {
   const calculateTotal = (order: Order) => {
     if (!order.product) return 0
-    const productPrice = getPrice(order.product.priceRanges, order.quantity)
-    const productTotal = productPrice * order.quantity
+    const productPrice = getPrice(order.product.priceRanges, order.quantity ?? 0)
+    const productTotal = productPrice * (order.quantity ?? 0)
     const optionsTotal = order.options.reduce((sum: any, option: any) => sum + option.price, 0)
     return productTotal + optionsTotal
   }
@@ -48,13 +48,22 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
               <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                 {order.product.name}
               </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                数量: {order.quantity} 本 ・ 合計: ¥
-                {(getPrice(order.product.priceRanges, order.quantity) * order.quantity).toLocaleString()}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                (単価: ¥{getPrice(order.product.priceRanges, order.quantity).toLocaleString()})
-              </Typography>
+              {order.quantity ?? 0 > 0 ? (
+                <>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    数量: {order.quantity} 本 ・ 合計: ¥
+                    {(getPrice(order.product.priceRanges, order.quantity ?? 0) * (order.quantity ?? 0)).toLocaleString()}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    (単価: ¥{getPrice(order.product.priceRanges, order.quantity ?? 0).toLocaleString()})
+                  </Typography>
+                </>
+              ) : (
+                <Typography variant="body1" sx={{ ml: 2, color: 'error.main' }}>
+                  本数が選択されていません
+                </Typography>
+              )}
+              
             </Box>
           ) : (
             <Typography variant="body1" sx={{ ml: 2, color: 'error.main' }}>
@@ -99,30 +108,29 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
         </Paper>
       ))}
 
-        <Paper sx={{ mb: 3, p: 3, borderRadius: 2, boxShadow: 3 }}>
+        {/* <Paper sx={{ mb: 3, p: 3, borderRadius: 2, boxShadow: 3 }}>
           <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
             🛍️ 手数料
           </Typography>
 
           <Box sx={{ mt: 2, ml: 2 }}>
             <Typography variant="body2">
-              配送料: ¥1000
+              配送料: ¥1,000
             </Typography>
           </Box>
     
-          {/* 小計 */}
           <Divider sx={{ my: 2 }} />
           <Box sx={{ ml: 2 }}>
             <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-              小計: ¥{1000}
+              小計: ¥1,000
             </Typography>
           </Box>
-        </Paper>
-    
+        </Paper> */}
+  
       {/* 合計金額 */}
       <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 3, backgroundColor: 'primary.light' }}>
         <Typography variant="h5" sx={{ fontWeight: 'bold', textAlign: 'center', color: 'primary.contrastText' }}>
-          💰 合計 : ¥{`${totalWithTax + 1000} (税込)`}
+          💰 合計 : ¥{`${totalWithTax.toLocaleString() } (税込)`}
         </Typography>
       </Paper>
     </Box>

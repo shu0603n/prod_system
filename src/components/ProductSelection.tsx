@@ -1,6 +1,6 @@
 "use client"
 
-import {  useMemo, useState } from "react"
+import {  useEffect, useMemo, useState } from "react"
 import { Button, Card, CardContent, CardMedia, Typography, List, ListItem, ListItemText, IconButton, TableHead, Table, TableCell, TableRow, TableBody, Chip, Paper, ListItemAvatar, Avatar, Box, AccordionDetails, Accordion, AccordionSummary } from "@mui/material"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward"
@@ -53,6 +53,17 @@ export default function ProductSelection({ products, selectedProduct, onSelect }
     data: data ?? [],
   });
 
+  const preloadImages = (products: any) => {
+    products.forEach((product: any) => {
+      const img = new Image();
+      img.src = product.image;
+    });
+  };
+  
+  useEffect(() => {
+    preloadImages(products);
+  }, []);
+
 
   return (
     <>
@@ -89,6 +100,7 @@ export default function ProductSelection({ products, selectedProduct, onSelect }
                 top: "50%",
                 transform: "translateY(-50%)",
                 backgroundColor: "rgba(255, 255, 255, 0.7)",
+                border: "1px solid gray",
                 "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.9)" },
               }}
             >
@@ -102,6 +114,7 @@ export default function ProductSelection({ products, selectedProduct, onSelect }
                 top: "50%",
                 transform: "translateY(-50%)",
                 backgroundColor: "rgba(255, 255, 255, 0.7)",
+                border: "1px solid gray",
                 "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.9)" },
               }}
             >
@@ -137,7 +150,7 @@ export default function ProductSelection({ products, selectedProduct, onSelect }
                       {headerGroup.headers.map((column: any) => (
                         <TableCell
                           {...column.getHeaderProps()}
-                          sx={{ width: `${100 / headerGroup.headers.length}%`, textAlign: 'center' }}
+                          sx={{ width: `${100 / headerGroup.headers.length}%`, textAlign: 'center', paddingLeft:1, paddingRight:1, paddingTop:2, paddingBottom:2}}
                         >
                           {column.render("Header")}
                         </TableCell>
@@ -154,7 +167,7 @@ export default function ProductSelection({ products, selectedProduct, onSelect }
                         {row.cells.map((cell: any) => (
                           <TableCell
                             {...cell.getCellProps()}
-                            sx={{ width: `${100 / row.cells.length}%`, textAlign: 'center' }}
+                            sx={{ width: `${100 / row.cells.length}%`, textAlign: 'center', paddingLeft:1, paddingRight:1, paddingTop:2, paddingBottom:2 }}
                           >
                             {cell.render("Cell")}
                           </TableCell>

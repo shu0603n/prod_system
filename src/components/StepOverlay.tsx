@@ -15,10 +15,10 @@ export default function StepOverlay({ step, text }: StepOverlayProps) {
     setShow(true)
     const timer = setTimeout(() => {
       setShow(false)
-    }, 3000)
+    }, 5000)
 
     return () => clearTimeout(timer)
-  }, [])
+  }, [step, text])
 
   return (
     <Fade in={show}>
@@ -34,16 +34,6 @@ export default function StepOverlay({ step, text }: StepOverlayProps) {
           borderRadius: 2,
           boxShadow: 3,
           zIndex: 9999,
-          "&::after": {
-            content: '""',
-            position: "absolute",
-            top: "100%",
-            left: "50%",
-            marginLeft: "-10px",
-            borderWidth: "10px",
-            borderStyle: "solid",
-            borderColor: "primary.main transparent transparent transparent",
-          },
         }}
       >
         <Typography variant="body1" sx={{ textAlign: "center" }}>

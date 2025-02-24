@@ -23,8 +23,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 const theme = createTheme()
 
 export default function App() {
-  const [orders, setOrders] = useState<Order[]>([{ product: null, quantity: 1, options: [options[0]] }])
-  // const [currentStep, setCurrentStep] = useState(1)
+  const [orders, setOrders] = useState<Order[]>([{ product: null, quantity: null, options: [options[0]] }])
+  const [currentStep, setCurrentStep] = useState(1)
   const [expandedIndex, setExpandedIndex] = useState<number | false>(0)
 
   const handleAccordionChange = (index: number) => (_: React.SyntheticEvent, isExpanded: boolean) => {
@@ -35,31 +35,31 @@ export default function App() {
     const newOrders = [...orders]
     newOrders[index].product = product
     setOrders(newOrders)
-    // if (currentStep === 1) {
-    //   setCurrentStep(2)
-    // }
+    if (currentStep === 1) {
+      setCurrentStep(2)
+    }
   }
 
-  const handleQuantityChange = (index: number, quantity: number) => {
+  const handleQuantityChange = (index: number, quantity: number | null) => {
     const newOrders = [...orders]
-    newOrders[index].quantity = quantity
+    newOrders[index].quantity = quantity ? Number(quantity) : null
     setOrders(newOrders)
-    // if (currentStep === 2) {
-    //   setCurrentStep(3)
-    // }
+    if (currentStep === 2) {
+      setCurrentStep(3)
+    }
   }
 
   const handleOptionSelect = (index: number, selectedOptions: Option[]) => {
     const newOrders = [...orders]
     newOrders[index].options = selectedOptions
     setOrders(newOrders)
-    // if (currentStep === 3) {
-    //   setCurrentStep(4)
-    // }
+    if (currentStep === 3) {
+      setCurrentStep(4)
+    }
   }
 
   const handleAddOrder = () => {
-    const newOrders = [...orders, { product: null, quantity: 1, options: [options[0]] }]
+    const newOrders = [...orders, { product: null, quantity: null, options: [options[0]] }]
     setOrders(newOrders)
     setExpandedIndex(newOrders.length - 1)
     // クリック時にiframeのstyleを更新
@@ -67,7 +67,7 @@ export default function App() {
     if(iframe){
       iframe.style.width = '100vh'; // ここでiframeの幅を更新
     }
-    // setCurrentStep(1)
+    setCurrentStep(1)
   }
 
   const handleDeleteOrder = (index: number) => {
@@ -80,8 +80,6 @@ export default function App() {
     }
   }
 
-  const isStep1Completed = orders.every((order) => order.product !== null)
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -91,7 +89,7 @@ export default function App() {
             料金シミュレーション
           </Typography>
 
-          {!isStep1Completed && <StepOverlay step={1} text={stepTexts[0]} />}
+          { <StepOverlay step={currentStep} text={stepTexts[currentStep - 1]} />}
 
           {orders.map((order, index) => (
             <Accordion key={index} expanded={expandedIndex === index} onChange={handleAccordionChange(index)}>
@@ -124,11 +122,13 @@ export default function App() {
                       quantity={order.quantity}
                       onChange={(quantity) => handleQuantityChange(index, quantity)}
                     />
-                    <OptionsSelection
-                      options={options}
-                      selectedOptions={order.options}
-                      onSelect={(selectedOptions) => handleOptionSelect(index, selectedOptions)}
-                    />
+                    {order.quantity && (
+                      <OptionsSelection
+                        options={options}
+                        selectedOptions={order.options}
+                        onSelect={(selectedOptions) => handleOptionSelect(index, selectedOptions)}
+                      />
+                    )}
                   </>
                 )}
               </AccordionDetails>

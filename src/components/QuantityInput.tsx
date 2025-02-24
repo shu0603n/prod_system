@@ -1,7 +1,7 @@
 import { Box, Typography, TextField, InputAdornment, Paper } from '@mui/material';
 
 interface QuantityInputProps {
-  quantity: number
+  quantity: number | null
   onChange: (quantity: number) => void
 }
 
@@ -15,7 +15,7 @@ export default function QuantityInput({ quantity, onChange }: QuantityInputProps
   <TextField
     type="number"
     value={quantity}
-    onChange={(e) => onChange(Number(e.target.value?.replace(/[^0-9]/g, '') || 0))}
+    onChange={(e) => onChange(e.target.value ? Number(e.target.value) : 0)}
     fullWidth
     placeholder="本数を入力"
     variant="outlined"
