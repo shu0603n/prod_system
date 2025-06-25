@@ -26,7 +26,7 @@ export default function AddOrderButton({ onClick }: AddOrderButtonProps) {
           textTransform: 'none' // テキストをそのまま表示（大文字変換を防ぐ）
         }}
       >
-        🥂 もう一本のシャンパンを追加する
+        🥂 もう一種類のシャンパンを追加する
       </Button>
     </Box>
   )
