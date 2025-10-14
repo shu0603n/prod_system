@@ -10,7 +10,6 @@ import {
   IconButton,
   Tooltip,
   Snackbar,
-  Alert,
   SnackbarContent,
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -21,7 +20,7 @@ import OptionsSelection from "../components/OptionsSelection";
 import TotalCalculation from "../components/TotalCalculation";
 import StepOverlay from "../components/StepOverlay";
 
-import { Order, Product, Option } from "../data/data";
+import { options, Order, Product, Option, products } from "../data/data";
 
 const theme = createTheme({
   palette: {
@@ -38,30 +37,6 @@ const theme = createTheme({
 });
 
 // ============================
-// ✅ API経由でDBのデータを取得
-// ============================
-async function getProducts(): Promise<{
-  products: Product[];
-  options: Option[];
-}> {
-  try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL ||
-      (process.env.VERCEL_URL
-        ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-        : "http://localhost:3000");
-
-    const res = await fetch(`${baseUrl}/api/products`, { cache: "no-store" });
-
-    if (!res.ok) throw new Error("Failed to fetch products and options");
-    return await res.json();
-  } catch (error) {
-    console.error("❌ 商品データ取得エラー:", error);
-    return { products: [], options: [] };
-  }
-}
-
-// ============================
 // ✅ メインコンポーネント
 // ============================
 export default function App() {
@@ -73,20 +48,11 @@ export default function App() {
     },
   ]);
   const [currentStep, setCurrentStep] = useState(1);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [options, setOptions] = useState<Option[]>([]);
   const [copied, setCopied] = useState(false); // ✅ コピー完了通知
 
   // ──────────────
   // データ取得
   // ──────────────
-  useEffect(() => {
-    (async () => {
-      const { products, options } = await getProducts();
-      setProducts(products);
-      setOptions(options);
-    })();
-  }, []);
 
   // ──────────────
   // 各ステップ操作
