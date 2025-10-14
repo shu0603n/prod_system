@@ -65,136 +65,138 @@ export default function OptionsSelection({
           },
         }}
       >
-        {options.map((option) => {
-          const isSelected = selectedOptions.some(
-            (o) => o.name === option.name
-          );
+        {options
+          .sort((a, b) => a.sortId - b.sortId)
+          .map((option) => {
+            const isSelected = selectedOptions.some(
+              (o) => o.name === option.name
+            );
 
-          return (
-            <Card
-              key={option.name}
-              onClick={() => handleOptionChange(option)}
-              sx={(theme) => ({
-                flex: "0 0 auto",
-                width: "25%",
-                cursor: "pointer",
-                scrollSnapAlign: "start",
-                border: isSelected
-                  ? `3px solid ${theme.palette.primary.main}`
-                  : `1px solid ${theme.palette.divider}`,
-                borderRadius: 3,
-                boxShadow: isSelected
-                  ? "0 4px 12px rgba(25, 118, 210, 0.3)" // 選択時：青っぽい影
-                  : "0 2px 6px rgba(0, 0, 0, 0.1)",
-                transform: isSelected ? "scale(1.05)" : "scale(1)",
-                transition: "all 0.25s ease",
-                "&:hover": {
-                  boxShadow: "0 6px 16px rgba(0, 0, 0, 0.15)",
-                  transform: "scale(1.05)",
-                  borderColor: theme.palette.primary.main,
-                },
-                mb: 0, // ✅ 下方向の余白リセット
-              })}
-            >
-              <Box
-                sx={{
-                  position: "relative",
-                  display: "inline-block",
-                  width: "100%", // カード幅にフィット
-                  height: 150, // ← ここで高さを明示
-                  backgroundColor: "#fafafa",
-                  borderRadius: 2,
-                  overflow: "hidden",
-                }}
+            return (
+              <Card
+                key={option.name}
+                onClick={() => handleOptionChange(option)}
+                sx={(theme) => ({
+                  flex: "0 0 auto",
+                  width: "150px",
+                  cursor: "pointer",
+                  scrollSnapAlign: "start",
+                  border: isSelected
+                    ? `3px solid ${theme.palette.primary.main}`
+                    : `1px solid ${theme.palette.divider}`,
+                  borderRadius: 3,
+                  boxShadow: isSelected
+                    ? "0 4px 12px rgba(25, 118, 210, 0.3)" // 選択時：青っぽい影
+                    : "0 2px 6px rgba(0, 0, 0, 0.1)",
+                  transform: isSelected ? "scale(1.05)" : "scale(1)",
+                  transition: "all 0.25s ease",
+                  "&:hover": {
+                    boxShadow: "0 6px 16px rgba(0, 0, 0, 0.15)",
+                    transform: "scale(1.05)",
+                    borderColor: theme.palette.primary.main,
+                  },
+                  mb: 0, // ✅ 下方向の余白リセット
+                })}
               >
-                {option.image ? (
-                  <>
-                    <CardMedia
-                      component="img"
-                      image={option.image}
-                      alt={option.name}
+                <Box
+                  sx={{
+                    position: "relative",
+                    display: "inline-block",
+                    width: "100%", // カード幅にフィット
+                    height: "100%",
+                    backgroundColor: "#fafafa",
+                    borderRadius: 2,
+                    overflow: "hidden",
+                  }}
+                >
+                  {option.image ? (
+                    <>
+                      <CardMedia
+                        component="img"
+                        image={option.image}
+                        alt={option.name}
+                        sx={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain", // 枠内に収める
+                        }}
+                      />
+                      <Typography
+                        variant="subtitle2"
+                        sx={{
+                          position: "absolute",
+                          top: 6,
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          backgroundColor: "rgba(0, 0, 0, 0.55)",
+                          color: "#fff",
+                          px: 1.5,
+                          py: 0.3,
+                          borderRadius: 1,
+                          fontWeight: "bold",
+                          fontSize: 13,
+                          whiteSpace: "nowrap",
+                          maxWidth: "90%",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {option.name}
+                      </Typography>
+                      <Typography
+                        variant="subtitle2"
+                        sx={{
+                          position: "absolute",
+                          bottom: 10,
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          backgroundColor: "rgba(0, 0, 0, 0.55)",
+                          color: "#fff",
+                          px: 1.5,
+                          py: 0.3,
+                          borderRadius: 1,
+                          fontWeight: "bold",
+                          fontSize: 13,
+                          whiteSpace: "nowrap",
+                          maxWidth: "90%",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        ¥{option.price.toLocaleString()}
+                      </Typography>
+                    </>
+                  ) : (
+                    <Paper
                       sx={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "contain", // 枠内に収める
-                      }}
-                    />
-                    <Typography
-                      variant="subtitle2"
-                      sx={{
-                        position: "absolute",
-                        top: 6,
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        backgroundColor: "rgba(0, 0, 0, 0.55)",
-                        color: "#fff",
-                        px: 1.5,
-                        py: 0.3,
-                        borderRadius: 1,
-                        fontWeight: "bold",
-                        fontSize: 13,
-                        whiteSpace: "nowrap",
-                        maxWidth: "90%",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
+                        position: "fixed",
+                        width: "100%", // 画面幅いっぱい
+                        height: "100%", // 画面高さいっぱい
+                        display: "flex", // 中央配置用
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "primary.light",
+                        boxShadow: 0, // 影を消したい場合
+                        borderRadius: 0, // 角丸もなくす
+                        zIndex: 9999, // 他の要素より上に表示
                       }}
                     >
-                      {option.name}
-                    </Typography>
-                    <Typography
-                      variant="subtitle2"
-                      sx={{
-                        position: "absolute",
-                        bottom: 10,
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        backgroundColor: "rgba(0, 0, 0, 0.55)",
-                        color: "#fff",
-                        px: 1.5,
-                        py: 0.3,
-                        borderRadius: 1,
-                        fontWeight: "bold",
-                        fontSize: 13,
-                        whiteSpace: "nowrap",
-                        maxWidth: "90%",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      ¥{option.price.toLocaleString()}
-                    </Typography>
-                  </>
-                ) : (
-                  <Paper
-                    sx={{
-                      position: "fixed",
-                      width: "100%", // 画面幅いっぱい
-                      height: "100%", // 画面高さいっぱい
-                      display: "flex", // 中央配置用
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: "primary.light",
-                      boxShadow: 0, // 影を消したい場合
-                      borderRadius: 0, // 角丸もなくす
-                      zIndex: 9999, // 他の要素より上に表示
-                    }}
-                  >
-                    <Typography
-                      variant="h3"
-                      sx={{
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        color: "primary.contrastText",
-                      }}
-                    >
-                      なし
-                    </Typography>
-                  </Paper>
-                )}
-              </Box>
-            </Card>
-          );
-        })}
+                      <Typography
+                        variant="h3"
+                        sx={{
+                          fontWeight: "bold",
+                          textAlign: "center",
+                          color: "primary.contrastText",
+                        }}
+                      >
+                        なし
+                      </Typography>
+                    </Paper>
+                  )}
+                </Box>
+              </Card>
+            );
+          })}
       </Box>
     </>
   );
