@@ -45,7 +45,14 @@ async function getProducts(): Promise<{
   options: Option[];
 }> {
   try {
-    const res = await fetch(`/api/products`, { cache: "no-store" });
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      (process.env.VERCEL_URL
+        ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+        : "http://localhost:3000");
+
+    const res = await fetch(`${baseUrl}/api/products`, { cache: "no-store" });
+
     if (!res.ok) throw new Error("Failed to fetch products and options");
     return await res.json();
   } catch (error) {
