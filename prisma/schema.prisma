@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          Int          @id @default(autoincrement())
+  name        String
+  image       String
+  led         String
+  alcohol     String
+  volume      String
+  origin      String
+  description String?
+  createdAt   DateTime     @default(now())
+  orders      Order[]
+  priceRanges PriceRange[]
+  varieties   Variety[]
+  sortId      Int?
+}
+
+model Variety {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  productId   Int
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model PriceRange {
+  id          Int     @id @default(autoincrement())
+  minQuantity Int
+  maxQuantity Int?
+  price       Int
+  productId   Int
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Option {
+  id           Int           @id @default(autoincrement())
+  name         String
+  price        Int
+  image        String?
+  orderOptions OrderOption[]
+  sortId       Int?
+}
+
+model Order {
+  id        Int           @id @default(autoincrement())
+  productId Int?
+  quantity  Int?
+  createdAt DateTime      @default(now())
+  product   Product?      @relation(fields: [productId], references: [id])
+  options   OrderOption[]
+}
+
+model OrderOption {
+  id       Int    @id @default(autoincrement())
+  orderId  Int
+  optionId Int
+  option   Option @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  order    Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
