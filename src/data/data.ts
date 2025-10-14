@@ -42,7 +42,7 @@ export const options: Option[] = [
   },
   {
     id: 3,
-    name: "キャップシール変更",
+    name: "キャップシール",
     price: 300,
     image: "/bottles/キャップシール.png",
     sortId: 1,
