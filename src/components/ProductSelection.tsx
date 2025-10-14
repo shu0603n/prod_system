@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Box, Card, CardMedia, Typography, Chip } from "@mui/material";
+import { Box, Card, Typography, Chip } from "@mui/material";
+import Image from "next/image";
 import { Product } from "../data/data";
 
 interface ProductSelectionProps {
@@ -13,19 +13,7 @@ export default function ProductSelection({
   selectedProduct,
   onSelect,
 }: ProductSelectionProps) {
-  useEffect(() => {
-    products.forEach((p) => {
-      const img = new Image();
-      img.src = p.image;
-    });
-  }, [products]);
-
-  // const [selectProduct, setSelectedProduct] = useState<Product>();
-
-  const handleClick = (product: Product) => {
-    onSelect(product);
-    // setSelectedProduct(product);
-  };
+  const handleClick = (product: Product) => onSelect(product);
 
   return (
     <>
@@ -36,7 +24,6 @@ export default function ProductSelection({
         STEP1 ボトルを選ぶ
       </Typography>
 
-      {/* スクロールできるボトル一覧 */}
       <Box
         sx={{
           display: "flex",
@@ -70,7 +57,7 @@ export default function ProductSelection({
                 borderRadius: 3,
                 boxShadow:
                   selectedProduct?.name === product.name
-                    ? "0 4px 12px rgba(25, 118, 210, 0.3)" // 選択時: 青っぽい影
+                    ? "0 4px 12px rgba(25, 118, 210, 0.3)"
                     : "0 2px 6px rgba(0, 0, 0, 0.1)",
                 transform:
                   selectedProduct?.name === product.name
@@ -87,23 +74,23 @@ export default function ProductSelection({
               <Box
                 sx={{
                   position: "relative",
-                  display: "inline-block",
-                  width: "100%", // カード幅にフィット
-                  height: "100%",
+                  width: "100%",
+                  aspectRatio: "1 / 1",
                   backgroundColor: "#fafafa",
                   borderRadius: 2,
                   overflow: "hidden",
                 }}
               >
-                <CardMedia
-                  component="img"
-                  image={product.image}
+                <Image
+                  src={product.image}
                   alt={product.name}
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain", // 枠内に収める
-                  }}
+                  fill
+                  style={{ objectFit: "contain" }}
+                  sizes="150px"
+                  priority={index < 4}
+                  loading={index >= 4 ? "lazy" : "eager"}
+                  placeholder="blur"
+                  blurDataURL="/placeholder.png"
                 />
 
                 <Typography
@@ -132,15 +119,10 @@ export default function ProductSelection({
             </Card>
           ))}
       </Box>
+
       {selectedProduct && (
         <Box sx={{ p: 2 }}>
-          <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="left"
-            gap={1}
-            sx={{ mb: 2 }}
-          >
+          <Box display="flex" flexWrap="wrap" justifyContent="left" gap={1}>
             <Chip label={selectedProduct.led} size="small" />
             <Chip label={selectedProduct.alcohol} size="small" />
             <Chip label={selectedProduct.volume} size="small" />

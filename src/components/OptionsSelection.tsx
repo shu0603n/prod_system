@@ -1,14 +1,6 @@
-import {
-  Box,
-  Checkbox,
-  Typography,
-  Card,
-  CardMedia,
-  Paper,
-} from "@mui/material";
+import { Box, Typography, Card } from "@mui/material";
+import Image from "next/image";
 import type { Option } from "../data/data";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 
 interface OptionsSelectionProps {
   options: Option[];
@@ -28,14 +20,9 @@ export default function OptionsSelection({
     } else {
       newSelectedOptions = selectedOptions.filter((o) => o.name !== "なし");
       const index = newSelectedOptions.findIndex((o) => o.name === option.name);
-      if (index === -1) {
-        newSelectedOptions.push(option);
-      } else {
-        newSelectedOptions.splice(index, 1);
-      }
-      if (newSelectedOptions.length === 0) {
-        newSelectedOptions = [options[0]]; // 'なし' オプション
-      }
+      if (index === -1) newSelectedOptions.push(option);
+      else newSelectedOptions.splice(index, 1);
+      if (newSelectedOptions.length === 0) newSelectedOptions = [options[0]];
     }
     onSelect(newSelectedOptions);
   };
@@ -67,7 +54,7 @@ export default function OptionsSelection({
       >
         {options
           .sort((a, b) => a.sortId - b.sortId)
-          .map((option) => {
+          .map((option, index) => {
             const isSelected = selectedOptions.some(
               (o) => o.name === option.name
             );
@@ -86,7 +73,7 @@ export default function OptionsSelection({
                     : `1px solid ${theme.palette.divider}`,
                   borderRadius: 3,
                   boxShadow: isSelected
-                    ? "0 4px 12px rgba(25, 118, 210, 0.3)" // 選択時：青っぽい影
+                    ? "0 4px 12px rgba(25, 118, 210, 0.3)"
                     : "0 2px 6px rgba(0, 0, 0, 0.1)",
                   transform: isSelected ? "scale(1.05)" : "scale(1)",
                   transition: "all 0.25s ease",
@@ -95,15 +82,13 @@ export default function OptionsSelection({
                     transform: "scale(1.05)",
                     borderColor: theme.palette.primary.main,
                   },
-                  mb: 0, // ✅ 下方向の余白リセット
                 })}
               >
                 <Box
                   sx={{
                     position: "relative",
-                    display: "inline-block",
-                    width: "100%", // カード幅にフィット
-                    height: "100%",
+                    width: "100%",
+                    aspectRatio: "1 / 1",
                     backgroundColor: "#fafafa",
                     borderRadius: 2,
                     overflow: "hidden",
@@ -111,16 +96,20 @@ export default function OptionsSelection({
                 >
                   {option.image ? (
                     <>
-                      <CardMedia
-                        component="img"
-                        image={option.image}
+                      {/* ✅ next/image で最適化 */}
+                      <Image
+                        src={option.image}
                         alt={option.name}
-                        sx={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "contain", // 枠内に収める
-                        }}
+                        fill
+                        style={{ objectFit: "contain" }}
+                        sizes="150px"
+                        priority={index < 4}
+                        loading={index >= 4 ? "lazy" : "eager"}
+                        placeholder="blur"
+                        blurDataURL="/placeholder.png" // 小さな透過PNGを置くと◎
                       />
+
+                      {/* 上部のラベル */}
                       <Typography
                         variant="subtitle2"
                         sx={{
@@ -143,6 +132,8 @@ export default function OptionsSelection({
                       >
                         {option.name}
                       </Typography>
+
+                      {/* 下部の価格 */}
                       <Typography
                         variant="subtitle2"
                         sx={{
@@ -167,31 +158,27 @@ export default function OptionsSelection({
                       </Typography>
                     </>
                   ) : (
-                    <Paper
+                    // ✅ 軽量な「なし」表示
+                    <Box
                       sx={{
-                        position: "fixed",
-                        width: "100%", // 画面幅いっぱい
-                        height: "100%", // 画面高さいっぱい
-                        display: "flex", // 中央配置用
+                        position: "absolute",
+                        inset: 0,
+                        display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         backgroundColor: "primary.light",
-                        boxShadow: 0, // 影を消したい場合
-                        borderRadius: 0, // 角丸もなくす
-                        zIndex: 9999, // 他の要素より上に表示
                       }}
                     >
                       <Typography
-                        variant="h3"
+                        variant="h6"
                         sx={{
                           fontWeight: "bold",
-                          textAlign: "center",
                           color: "primary.contrastText",
                         }}
                       >
                         なし
                       </Typography>
-                    </Paper>
+                    </Box>
                   )}
                 </Box>
               </Card>
