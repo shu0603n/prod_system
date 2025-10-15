@@ -20,7 +20,7 @@ import ProductSelection from "../components/ProductSelection";
 import QuantityInput from "../components/QuantityInput";
 import OptionsSelection from "../components/OptionsSelection";
 import TotalCalculation from "../components/TotalCalculation";
-import StepOverlay from "../components/StepOverlay";
+// import StepOverlay from "../components/StepOverlay";
 
 import { options, Order, Product, Option, products } from "../data/data";
 import { ShareIcon } from "lucide-react";
@@ -50,7 +50,7 @@ export default function App() {
       options: [],
     },
   ]);
-  const [currentStep, setCurrentStep] = useState(1);
+  // const [currentStep, setCurrentStep] = useState(1);
   const [copied, setCopied] = useState(false); // ✅ コピー完了通知
 
   // ──────────────
@@ -64,21 +64,21 @@ export default function App() {
     const newOrders = [...orders];
     newOrders[index].product = product;
     setOrders(newOrders);
-    if (currentStep === 1) setCurrentStep(2);
+    // if (currentStep === 1) setCurrentStep(2);
   };
 
   const handleQuantityChange = (index: number, quantity: number | null) => {
     const newOrders = [...orders];
     newOrders[index].quantity = quantity ? Number(quantity) : null;
     setOrders(newOrders);
-    if (currentStep === 2) setCurrentStep(3);
+    // if (currentStep === 2) setCurrentStep(3);
   };
 
   const handleOptionSelect = (index: number, selectedOptions: Option[]) => {
     const newOrders = [...orders];
     newOrders[index].options = selectedOptions;
     setOrders(newOrders);
-    if (currentStep === 3) setCurrentStep(4);
+    // if (currentStep === 3) setCurrentStep(4);
   };
 
   // ============================
@@ -124,7 +124,7 @@ export default function App() {
         {products.length && options.length ? (
           <Box sx={{ my: 4 }}>
             {/* ステップ表示 */}
-            <StepOverlay step={currentStep} text={stepTexts[currentStep - 1]} />
+            {/* <StepOverlay step={currentStep} text={stepTexts[currentStep - 1]} /> */}
 
             {/* 注文フォーム */}
             {orders.map((order, index) => (
