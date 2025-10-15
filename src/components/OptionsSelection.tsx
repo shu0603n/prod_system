@@ -154,7 +154,7 @@ export default function OptionsSelection({
                           textOverflow: "ellipsis",
                         }}
                       >
-                        ¥{option.price.toLocaleString()}
+                        {option.unit}: ¥{option.price.toLocaleString()}
                       </Typography>
                     </>
                   ) : (

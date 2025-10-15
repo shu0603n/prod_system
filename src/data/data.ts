@@ -11,10 +11,17 @@ export type Product = {
   alcohol: string;
   volume: string;
   origin: string;
-  varieties: { name: string; description: string }[];
+  varieties: Variety[];
   description?: string;
   priceRanges: PriceRange[];
   sortId: number;
+  selectedVariety?: string;
+};
+
+export type Variety = {
+  name: string;
+  description?: string;
+  selected: boolean;
 };
 
 export type Option = {
@@ -22,6 +29,7 @@ export type Option = {
   image?: any;
   name: string;
   price: number;
+  unit?: string;
   sortId: number;
 };
 
@@ -37,6 +45,7 @@ export const options: Option[] = [
     id: 2,
     name: "LEDライト",
     price: 300,
+    unit: "1個",
     image: "/bottles/LED発光ボトル.png",
     sortId: 4,
   },
@@ -44,6 +53,7 @@ export const options: Option[] = [
     id: 3,
     name: "キャップシール",
     price: 300,
+    unit: "1個",
     image: "/bottles/キャップシール.png",
     sortId: 1,
   },
@@ -51,6 +61,7 @@ export const options: Option[] = [
     id: 4,
     name: "キーホルダー",
     price: 300,
+    unit: "1個",
     image: "/bottles/アクリルキーホルダー.png",
     sortId: 3,
   },
@@ -58,6 +69,7 @@ export const options: Option[] = [
     id: 5,
     name: "卓上ポップ",
     price: 2800,
+    unit: "４枚",
     image: "/bottles/卓上POPイメージ.png",
     sortId: 5,
   },
@@ -65,6 +77,7 @@ export const options: Option[] = [
     id: 6,
     name: "ネックシール",
     price: 300,
+    unit: "1個",
     image: "/bottles/ネックシール.png",
     sortId: 2,
   },
@@ -80,28 +93,35 @@ export const products: Product[] = [
     origin: "原産国：ドイツ",
     varieties: [
       {
-        name: "甘口マンゴー (alc 3.9%)",
-        description: "マンゴーの繊細な果実感があり飲みやすい。",
-      },
-      {
-        name: "甘口レモン (alc 3.9%)",
-        description: "レモンの清涼感、爽やかさと果実感。",
-      },
-      {
-        name: "甘口ストロベリー (alc 3.9%)",
-        description: "イチゴの果実感と甘酸っぱさ。",
-      },
-      {
-        name: "甘口ピーチ (alc 3.9%)",
-        description: "ピーチの果実感たっぷりなのにすっきりとした甘さ",
-      },
-      {
-        name: "甘口グリーンアップル (alc 3.9%)",
+        name: "ｸﾞﾘｰﾝｱｯﾌﾟﾙ",
         description: "青リンゴの果実感たっぷり、甘さが特徴。",
+        selected: false,
       },
       {
-        name: "甘口ライチ (alc 3.9%)",
+        name: "ライチ",
         description: "ライチの果実感たっぷり、甘さが特徴。",
+        selected: false,
+      },
+      {
+        name: "マンゴー",
+        description: "マンゴーの繊細な果実感があり飲みやすい。",
+        selected: false,
+      },
+      {
+        name: "ｽﾄﾛﾍﾞﾘｰ",
+        description: "イチゴの果実感と甘酸っぱさ。",
+        selected: false,
+      },
+      {
+        name: "レモン",
+        description: "レモンの清涼感、爽やかさと果実感。",
+        selected: false,
+      },
+
+      {
+        name: "ピーチ",
+        description: "ピーチの果実感たっぷりなのにすっきりとした甘さ",
+        selected: false,
       },
     ],
     priceRanges: [
@@ -123,28 +143,34 @@ export const products: Product[] = [
     origin: "原産国：フランス",
     varieties: [
       {
-        name: "ピーチ (alc 3.5%)",
-        description: "ピーチのフルーティーで甘みのある飲みやすさ。",
-      },
-      {
-        name: "青リンゴ (alc 3.5%)",
-        description: "青リンゴの甘みとフレッシュな味わい。",
-      },
-      {
-        name: "ライチ (alc 3.5%)",
-        description: "ライチのアロマフレッシュな味わい。",
-      },
-      {
-        name: "パイン (alc 3.5%)",
-        description: "パイナップルのアロマフレッシュな味わい。",
-      },
-      {
-        name: "ラズベリー (alc 3.5%)",
-        description: "甘酸っぱくフレッシュ、微炭酸で飲みやすい。",
-      },
-      {
-        name: "マスカット (alc 2.5%)",
+        name: "マスカット",
         description: "フルーティーでフレッシュ、微炭酸で飲みやすい。",
+        selected: false,
+      },
+      {
+        name: "ライチ",
+        description: "ライチのアロマフレッシュな味わい。",
+        selected: false,
+      },
+      {
+        name: "パイン",
+        description: "パイナップルのアロマフレッシュな味わい。",
+        selected: false,
+      },
+      {
+        name: "ラズベリー",
+        description: "甘酸っぱくフレッシュ、微炭酸で飲みやすい。",
+        selected: false,
+      },
+      {
+        name: "青リンゴ",
+        description: "青リンゴの甘みとフレッシュな味わい。",
+        selected: false,
+      },
+      {
+        name: "ピーチ",
+        description: "ピーチのフルーティーで甘みのある飲みやすさ。",
+        selected: false,
       },
     ],
     priceRanges: [
@@ -165,8 +191,9 @@ export const products: Product[] = [
     origin: "原産国：スペイン",
     varieties: [
       {
-        name: "やや甘口マスカット (alc 8.5%)",
+        name: "やや甘口マスカット",
         description: "アルコール度数を感じさせないフルーティーな味。",
+        selected: false,
       },
     ],
     description:
@@ -183,18 +210,20 @@ export const products: Product[] = [
   {
     name: "プロヴェット",
     image: "/bottles/プロヴェット(ロゼ).png",
-    led: "ブリュット：LED非対応、ロゼ：LED対応",
+    led: "ロゼのみLED対応",
     alcohol: "度数：11.5%",
     volume: "内容量：750ml",
     origin: "原産国：スペイン",
     varieties: [
       {
-        name: "辛口ブリュット (alc 11.5%)",
+        name: "ブリュット",
         description: "コスパ抜群。フレッシュな辛口スパークリング。",
+        selected: false,
       },
       {
-        name: "辛口ロゼ (alc 11.5%)",
+        name: "ロゼ",
         description: "コスパ抜群。フレッシュな辛口ロゼスパークリング。",
+        selected: false,
       },
     ],
     description:
@@ -211,22 +240,25 @@ export const products: Product[] = [
   {
     name: "モマンドール",
     image: "/bottles/モマンドールアイス.png",
-    led: "ドライ：LED非対応、ロゼ・アイス：LED対応",
+    led: "ロゼ・アイスのみLED対応",
     alcohol: "度数：8.5%",
     volume: "内容量：750ml",
     origin: "原産国：スペイン",
     varieties: [
       {
-        name: "辛口ドライ (alc 8.5%)",
-        description: "ヴーヴイエローとモエ白を足して2で割ったような味。",
-      },
-      {
-        name: "甘口ロゼ (alc 8.5%)",
-        description: "ヴーヴイエローとモエ白を足して2で割ったような味。",
-      },
-      {
-        name: "中辛口アイス (alc 8.5%)",
+        name: "アイス",
         description: "ヴーヴホワイトをフレッシュにしたような味。",
+        selected: false,
+      },
+      {
+        name: "ドライ",
+        description: "ヴーヴイエローとモエ白を足して2で割ったような味。",
+        selected: false,
+      },
+      {
+        name: "ロゼ",
+        description: "ヴーヴイエローとモエ白を足して2で割ったような味。",
+        selected: false,
       },
     ],
     description:
@@ -249,16 +281,20 @@ export const products: Product[] = [
     origin: "原産国：フランス",
     varieties: [
       {
-        name: "甘口レッド (alc 0%)",
-        description: "ブドウの甘み、渋み、果実感のある飲みやすい味。",
-      },
-      {
-        name: "甘口ホワイト (alc 0%)",
-        description: "りんごの甘み、渋み、甘さのある飲みやすい味。",
-      },
-      {
-        name: "甘口アップル (alc 0%)",
+        name: "アップル",
         description: "ブドウの甘み、渋み、甘さのある飲みやすい味。",
+        selected: false,
+      },
+
+      {
+        name: "ﾎﾜｲﾄｸﾞﾚｰﾌﾟ",
+        description: "りんごの甘み、渋み、甘さのある飲みやすい味。",
+        selected: false,
+      },
+      {
+        name: "ﾚｯﾄﾞｸﾞﾚｰﾌﾟ",
+        description: "ブドウの甘み、渋み、果実感のある飲みやすい味。",
+        selected: false,
       },
     ],
     description:

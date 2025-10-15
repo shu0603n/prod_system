@@ -1,4 +1,12 @@
-import { Box, Typography, Divider, Paper, Chip, Stack } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  Paper,
+  Chip,
+  Stack,
+  Button,
+} from "@mui/material";
 import { Order, PriceRange } from "../data/data";
 
 interface TotalCalculationProps {
@@ -55,6 +63,16 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
       {orders.map((order, index) => {
         const qty = order.quantity ?? 0;
         const hasProduct = !!order.product;
+        const selectedVariety = order?.product?.varieties.find(
+          (v) => v.selected
+        );
+        const optionsTotal = order.options.reduce((sum, o) => {
+          // id が 5 のオプションは数量を掛けない
+          if (o.id === 5) {
+            return sum + o.price;
+          }
+          return sum + o.price * qty;
+        }, 0);
 
         return (
           <Box key={index} sx={{ mb: 4 }}>
@@ -69,9 +87,35 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
 
             {hasProduct ? (
               <Box sx={{ ml: 2, mt: 1 }}>
-                <Typography variant="body1" fontWeight="bold">
-                  {order.product!.name}
-                </Typography>
+                <Stack
+                  direction="row"
+                  flexWrap="wrap"
+                  useFlexGap
+                  alignItems="flex-start"
+                  spacing={1}
+                >
+                  <Typography variant="body2" fontWeight="bold">
+                    {order.product!.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    (単価: ¥
+                    {getPrice(order.product!.priceRanges, qty).toLocaleString()}
+                    )
+                  </Typography>
+                </Stack>
+                {selectedVariety ? (
+                  <Typography variant="body2" color="text.secondary">
+                    味: {selectedVariety.name}
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="body2"
+                    color="error.main"
+                    sx={{ mt: 0.5 }}
+                  >
+                    味が選択されていません
+                  </Typography>
+                )}
 
                 {qty > 0 ? (
                   <>
@@ -80,14 +124,6 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
                       {(
                         getPrice(order.product!.priceRanges, qty) * qty
                       ).toLocaleString()}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      (単価: ¥
-                      {getPrice(
-                        order.product!.priceRanges,
-                        qty
-                      ).toLocaleString()}
-                      )
                     </Typography>
                   </>
                 ) : (
@@ -119,29 +155,29 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
               ■ オプション
             </Typography>
 
-            {order.options.length > 0 ? (
-              <Stack
-                direction="row"
-                flexWrap="wrap"
-                useFlexGap
-                alignItems="flex-start"
-                spacing={1}
-                sx={{
-                  ml: 2,
-                  mt: 1,
-                  rowGap: 1, // ✅ 折り返し行の上下間隔
-                }}
-              >
+            {order.options.length > 0 &&
+            order?.options?.some((option) => option.id !== 1) ? (
+              <Box sx={{ ml: 2, mt: 1 }}>
                 {order.options.map((option, idx) => (
-                  <Chip
-                    key={idx}
-                    label={`${option.name} (¥${option.price.toLocaleString()})`}
-                    sx={{
-                      borderRadius: 1,
-                    }}
-                  />
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    useFlexGap
+                    alignItems="flex-start"
+                    spacing={1}
+                  >
+                    <Typography variant="body2" fontWeight="bold">
+                      {option.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      (単価: ¥{option.price.toLocaleString()})
+                    </Typography>
+                  </Stack>
                 ))}
-              </Stack>
+                <Typography variant="body2" color="text.secondary">
+                  合計: ¥{optionsTotal.toLocaleString()}
+                </Typography>
+              </Box>
             ) : (
               <Typography
                 variant="body2"

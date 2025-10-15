@@ -11,8 +11,10 @@ import {
   Tooltip,
   Snackbar,
   SnackbarContent,
+  Button,
+  Stack,
 } from "@mui/material";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { ContentCopy } from "@mui/icons-material";
 
 import ProductSelection from "../components/ProductSelection";
 import QuantityInput from "../components/QuantityInput";
@@ -21,6 +23,7 @@ import TotalCalculation from "../components/TotalCalculation";
 import StepOverlay from "../components/StepOverlay";
 
 import { options, Order, Product, Option, products } from "../data/data";
+import { ShareIcon } from "lucide-react";
 
 const theme = createTheme({
   palette: {
@@ -150,46 +153,75 @@ export default function App() {
             {/* 合計表示 */}
             <Box sx={{ mt: 4 }}>
               <TotalCalculation orders={orders} />
-              {/* ✅ コピーアイコン付きボタン */}
-              <Box sx={{ mt: 3, textAlign: "center" }}>
-                <Tooltip title="見積内容をコピー" arrow>
-                  <IconButton
+
+              {/* ✅ 2つのボタンを横並びで50%ずつ */}
+              <Stack
+                direction={{ xs: "column", sm: "row" }} // スマホでは縦並び、PCでは横並び
+                spacing={2}
+                sx={{ mt: 2 }}
+              >
+                {/* LINE相談ボタン */}
+                <Button
+                  variant="contained"
+                  color="success"
+                  href="https://line.me/R/ti/p/@367ihugx?from=page&accountId=367ihugx"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{
+                    flex: 1,
+                    py: 1.5,
+                    fontWeight: "bold",
+                    fontSize: "1rem",
+                    borderRadius: 3,
+                    textTransform: "none",
+                    backgroundColor: "#06C755", // LINEグリーン
+                    "&:hover": {
+                      backgroundColor: "#05b24a",
+                    },
+                  }}
+                  startIcon={<ShareIcon fontSize="small" />}
+                >
+                  LINEで相談する
+                </Button>
+
+                {/* 見積コピー */}
+                <Tooltip title="見積内容をコピー" arrow sx={{ flex: 1 }}>
+                  <Button
                     onClick={handleCopyEstimate}
+                    variant="contained"
                     sx={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 1,
+                      flex: 1,
+                      py: 1.5,
+                      fontWeight: "bold",
+                      fontSize: "1rem",
+                      borderRadius: 3,
+                      textTransform: "none",
                       backgroundColor: "#1e1e1e",
                       color: "#fff",
-                      px: 2,
-                      py: 1,
-                      borderRadius: "8px",
-                      fontSize: "0.9rem",
                       "&:hover": { backgroundColor: "#333" },
                     }}
+                    startIcon={<ContentCopy fontSize="small" />}
                   >
-                    <ContentCopyIcon fontSize="small" />
-                    <Typography variant="body2">見積をコピーする</Typography>
-                  </IconButton>
+                    見積をコピーする
+                  </Button>
                 </Tooltip>
-              </Box>
-              {/* ✅ コピー完了スナックバー */}
-              <Snackbar
-                open={copied}
-                autoHideDuration={2500}
-                onClose={() => setCopied(false)}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-              >
-                <SnackbarContent
-                  sx={{
-                    backgroundColor: "primary.light",
-                    color: "white",
-                    fontWeight: "bold",
-                    textAlign: "center",
-                  }}
-                  message="見積内容をコピーしました！"
-                />
-              </Snackbar>
+                <Snackbar
+                  open={copied}
+                  autoHideDuration={2500}
+                  onClose={() => setCopied(false)}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                >
+                  <SnackbarContent
+                    sx={{
+                      backgroundColor: "primary.light",
+                      color: "white",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                    message="見積内容をコピーしました！"
+                  />
+                </Snackbar>
+              </Stack>
             </Box>
           </Box>
         ) : (
