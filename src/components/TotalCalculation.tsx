@@ -44,14 +44,7 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
   const totalWithTax = subtotal + tax;
 
   return (
-    <Box sx={{ my: 4, p: 2 }}>
-      <Typography
-        variant="h6"
-        sx={{ mb: 2, fontWeight: "bold", color: "primary.main" }}
-      >
-        お見積り明細
-      </Typography>
-
+    <>
       {orders.map((order, index) => {
         const qty = order.quantity ?? 0;
         const hasProduct = !!order.product;
@@ -69,7 +62,6 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
         return (
           <Box key={index} sx={{ mb: 4 }}>
             {/* ─────────────── ボトル情報 ─────────────── */}
-            <Divider sx={{ mb: 1 }} />
             <Typography
               variant="subtitle1"
               sx={{ fontWeight: "bold", color: "text.secondary" }}
@@ -231,6 +223,6 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
           (内消費税 ¥{tax.toLocaleString()} / 小計 ¥{subtotal.toLocaleString()})
         </Typography>
       </Paper>
-    </Box>
+    </>
   );
 }
