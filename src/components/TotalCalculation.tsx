@@ -200,7 +200,7 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
         })}
       >
         <Typography
-          variant="h5"
+          variant="h6"
           align="center"
           fontWeight="bold"
           sx={{ letterSpacing: 1 }}
@@ -208,7 +208,7 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
           合計金額（税込）
         </Typography>
         <Typography
-          variant="h3"
+          variant="h4"
           align="center"
           fontWeight="bold"
           sx={{ mt: 1, color: "white" }}
