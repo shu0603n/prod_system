@@ -209,7 +209,7 @@ export const products: Product[] = [
   },
   {
     name: "プロヴェット",
-    image: "/bottles/プロヴェット(ロゼ).png",
+    image: "/bottles/プロヴェットブリュット.png",
     led: "ロゼのみLED対応",
     alcohol: "度数：11.5%",
     volume: "内容量：750ml",
