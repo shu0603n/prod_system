@@ -1,12 +1,4 @@
-import {
-  Box,
-  Typography,
-  Divider,
-  Paper,
-  Chip,
-  Stack,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Divider, Paper, Stack } from "@mui/material";
 import { Order, PriceRange } from "../data/data";
 
 interface TotalCalculationProps {

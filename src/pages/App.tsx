@@ -24,6 +24,7 @@ import TotalCalculation from "../components/TotalCalculation";
 
 import { options, Order, Product, Option, products } from "../data/data";
 import { ShareIcon } from "lucide-react";
+import EstimateModal from "../components/EstimateModal";
 
 const theme = createTheme({
   palette: {
@@ -151,78 +152,10 @@ export default function App() {
             ))}
 
             {/* 合計表示 */}
-            <Box sx={{ mt: 4 }}>
-              <TotalCalculation orders={orders} />
-
-              {/* ✅ 2つのボタンを横並びで50%ずつ */}
-              <Stack
-                direction={{ xs: "column", sm: "row" }} // スマホでは縦並び、PCでは横並び
-                spacing={2}
-                sx={{ mt: 2 }}
-              >
-                {/* LINE相談ボタン */}
-                <Button
-                  variant="contained"
-                  color="success"
-                  href="https://line.me/R/ti/p/@367ihugx?from=page&accountId=367ihugx"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{
-                    flex: 1,
-                    py: 1.5,
-                    fontWeight: "bold",
-                    fontSize: "1rem",
-                    borderRadius: 3,
-                    textTransform: "none",
-                    backgroundColor: "#06C755", // LINEグリーン
-                    "&:hover": {
-                      backgroundColor: "#05b24a",
-                    },
-                  }}
-                  startIcon={<ShareIcon fontSize="small" />}
-                >
-                  LINEで相談する
-                </Button>
-
-                {/* 見積コピー */}
-                <Tooltip title="見積内容をコピー" arrow sx={{ flex: 1 }}>
-                  <Button
-                    onClick={handleCopyEstimate}
-                    variant="contained"
-                    sx={{
-                      flex: 1,
-                      py: 1.5,
-                      fontWeight: "bold",
-                      fontSize: "1rem",
-                      borderRadius: 3,
-                      textTransform: "none",
-                      backgroundColor: "#1e1e1e",
-                      color: "#fff",
-                      "&:hover": { backgroundColor: "#333" },
-                    }}
-                    startIcon={<ContentCopy fontSize="small" />}
-                  >
-                    見積をコピーする
-                  </Button>
-                </Tooltip>
-                <Snackbar
-                  open={copied}
-                  autoHideDuration={2500}
-                  onClose={() => setCopied(false)}
-                  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                >
-                  <SnackbarContent
-                    sx={{
-                      backgroundColor: "primary.light",
-                      color: "white",
-                      fontWeight: "bold",
-                      textAlign: "center",
-                    }}
-                    message="見積内容をコピーしました！"
-                  />
-                </Snackbar>
-              </Stack>
-            </Box>
+            <EstimateModal
+              orders={orders}
+              handleCopyEstimate={handleCopyEstimate}
+            />
           </Box>
         ) : (
           // ✅ ローディング画面

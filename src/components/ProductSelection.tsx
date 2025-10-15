@@ -146,6 +146,7 @@ export default function ProductSelection({
             <Box display="flex" flexWrap="wrap" justifyContent="left" gap={1}>
               <Chip label={selectedProduct.led} size="small" />
               <Chip label={selectedProduct.alcohol} size="small" />
+              <Chip label={selectedProduct.taste} size="small" />
               {/* <Chip label={selectedProduct.volume} size="small" />
               <Chip label={selectedProduct.origin} size="small" /> */}
             </Box>

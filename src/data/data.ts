@@ -11,6 +11,7 @@ export type Product = {
   alcohol: string;
   volume: string;
   origin: string;
+  taste: string;
   varieties: Variety[];
   description?: string;
   priceRanges: PriceRange[];
@@ -91,6 +92,7 @@ export const products: Product[] = [
     alcohol: "度数：3.9%",
     volume: "内容量：750ml",
     origin: "原産国：ドイツ",
+    taste: "甘口",
     varieties: [
       {
         name: "ｸﾞﾘｰﾝｱｯﾌﾟﾙ",
@@ -141,6 +143,7 @@ export const products: Product[] = [
     alcohol: "度数：2.5~3.5%",
     volume: "内容量：750ml",
     origin: "原産国：フランス",
+    taste: "甘口",
     varieties: [
       {
         name: "マスカット",
@@ -189,9 +192,10 @@ export const products: Product[] = [
     alcohol: "度数：11.5%",
     volume: "内容量：750ml",
     origin: "原産国：スペイン",
+    taste: "中辛口",
     varieties: [
       {
-        name: "やや甘口マスカット",
+        name: "マスカット",
         description: "アルコール度数を感じさせないフルーティーな味。",
         selected: false,
       },
@@ -214,6 +218,7 @@ export const products: Product[] = [
     alcohol: "度数：11.5%",
     volume: "内容量：750ml",
     origin: "原産国：スペイン",
+    taste: "辛口",
     varieties: [
       {
         name: "ブリュット",
@@ -244,6 +249,7 @@ export const products: Product[] = [
     alcohol: "度数：8.5%",
     volume: "内容量：750ml",
     origin: "原産国：スペイン",
+    taste: "中辛口",
     varieties: [
       {
         name: "アイス",
@@ -279,6 +285,7 @@ export const products: Product[] = [
     alcohol: "度数：ノンアルコール",
     volume: "内容量：750ml",
     origin: "原産国：フランス",
+    taste: "甘口",
     varieties: [
       {
         name: "アップル",
