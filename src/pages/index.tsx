@@ -25,25 +25,52 @@ import TotalCalculation from "../components/TotalCalculation";
 import { options, Order, Product, Option, products } from "../data/data";
 import { ShareIcon } from "lucide-react";
 import EstimateModal from "../components/EstimateModal";
+import { useRouter } from "next/router";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#e91e63", // ピンク系
-      light: "#f48fb1",
-      dark: "#c2185b",
-      contrastText: "#fff",
-    },
-    secondary: {
-      main: "#ff9800", // オレンジ系
-    },
-  },
-});
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: "#e91e63", // ピンク系
+//       light: "#f48fb1",
+//       dark: "#c2185b",
+//       contrastText: "#fff",
+//     },
+//     secondary: {
+//       main: "#ff9800", // オレンジ系
+//     },
+//   },
+// });
 
 // ============================
 // ✅ メインコンポーネント
 // ============================
 export default function App() {
+  const router = useRouter();
+  const { main, light, dark } = router.query;
+
+  // デフォルトテーマ
+  let primaryMain = "#e91e63";
+  let primaryLight = "#f48fb1";
+  let primaryDark = "#c2185b";
+
+  // ============================
+  // 🎨 クエリパラメータがあれば上書き
+  // ============================
+  if (typeof main === "string") primaryMain = `#${main}`;
+  if (typeof light === "string") primaryLight = `#${light}`;
+  if (typeof dark === "string") primaryDark = `#${dark}`;
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: primaryMain,
+        light: primaryLight,
+        dark: primaryDark,
+        contrastText: "#fff",
+      },
+    },
+  });
+
   const [orders, setOrders] = useState<Order[]>([
     {
       product: null,
