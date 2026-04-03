@@ -15,9 +15,9 @@ export default function QuantityInput({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
 
-    if (value < 0) {
+    if (value < 6) {
       setError(true);
-      onChange(0); // 自動で0に戻したい場合
+      onChange(value); // 入力値は保持
     } else {
       setError(false);
       onChange(value);
@@ -38,15 +38,16 @@ export default function QuantityInput({
         value={quantity ?? ""}
         onChange={handleChange}
         fullWidth
-        placeholder="本数を入力"
+        placeholder="6本以上で入力"
         variant="outlined"
+        inputProps={{ min: 6 }} // ← これ重要
         InputProps={{
           endAdornment: (
             <Typography sx={{ color: "text.secondary", ml: 1 }}>本</Typography>
           ),
         }}
         error={error}
-        helperText={error ? "0以上の数値を入力してください" : ""}
+        helperText={error ? "6本以上を入力してください" : ""}
         sx={{
           "& .MuiOutlinedInput-root": {
             borderRadius: 2,

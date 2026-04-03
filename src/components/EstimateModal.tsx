@@ -27,7 +27,7 @@ export default function EstimateModal({ orders, handleCopyEstimate }: any) {
   const isEnabled = orders.some((order: any) => {
     return (
       order.product &&
-      order.quantity > 0 &&
+      order.quantity > 5 &&
       order.product.varieties?.some((v: any) => v.selected === true)
     );
   });

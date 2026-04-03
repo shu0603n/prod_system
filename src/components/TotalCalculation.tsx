@@ -5,8 +5,10 @@ interface TotalCalculationProps {
   orders: Order[];
 }
 
-// ✅ 本数に応じて価格帯から単価を取得
+// 本数に応じて価格帯から単価を取得
 function getPrice(priceRanges: PriceRange[], quantity: number): number {
+  if (!priceRanges || priceRanges.length === 0) return 0;
+
   for (const range of priceRanges) {
     if (
       quantity >= range.minQuantity &&
@@ -15,16 +17,19 @@ function getPrice(priceRanges: PriceRange[], quantity: number): number {
       return range.price;
     }
   }
+
+  // 該当しない場合は末尾の価格を返す
   return priceRanges[priceRanges.length - 1].price;
 }
 
 export default function TotalCalculation({ orders }: TotalCalculationProps) {
-  // ✅ 各注文の小計を計算
   const calculateTotal = (order: Order) => {
     if (!order.product) return 0;
+
     const qty = order.quantity ?? 0;
     const productPrice = getPrice(order.product.priceRanges, qty);
     const productTotal = productPrice * qty;
+
     const optionsTotal = order.options.reduce((sum, o) => {
       // id が 5 のオプションは数量を掛けない
       if (o.id === 5) {
@@ -32,13 +37,13 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
       }
       return sum + o.price * qty;
     }, 0);
+
     return productTotal + optionsTotal;
   };
 
-  // ✅ 全注文合計
   const subtotal = orders.reduce(
     (sum, order) => sum + calculateTotal(order),
-    0
+    0,
   );
   const tax = Math.floor(subtotal * 0.1);
   const totalWithTax = subtotal + tax;
@@ -48,9 +53,11 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
       {orders.map((order, index) => {
         const qty = order.quantity ?? 0;
         const hasProduct = !!order.product;
+
         const selectedVariety = order?.product?.varieties.find(
-          (v) => v.selected
+          (v) => v.selected,
         );
+
         const optionsTotal = order.options.reduce((sum, o) => {
           // id が 5 のオプションは数量を掛けない
           if (o.id === 5) {
@@ -59,9 +66,12 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
           return sum + o.price * qty;
         }, 0);
 
+        const unitPrice = hasProduct
+          ? getPrice(order.product!.priceRanges, qty)
+          : 0;
+
         return (
           <Box key={index} sx={{ mb: 4 }}>
-            {/* ─────────────── ボトル情報 ─────────────── */}
             <Typography
               variant="subtitle1"
               sx={{ fontWeight: "bold", color: "text.secondary" }}
@@ -82,11 +92,10 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
                     {order.product!.name}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    (単価: ¥
-                    {getPrice(order.product!.priceRanges, qty).toLocaleString()}
-                    )
+                    (単価: ¥{unitPrice.toLocaleString()})
                   </Typography>
                 </Stack>
+
                 {selectedVariety ? (
                   <Typography variant="body2" color="text.secondary">
                     味: {selectedVariety.name}
@@ -102,14 +111,10 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
                 )}
 
                 {qty > 0 ? (
-                  <>
-                    <Typography variant="body2" color="text.secondary">
-                      数量: {qty} 本 ・ 合計: ¥
-                      {(
-                        getPrice(order.product!.priceRanges, qty) * qty
-                      ).toLocaleString()}
-                    </Typography>
-                  </>
+                  <Typography variant="body2" color="text.secondary">
+                    数量: {qty} 本 ・ 合計: ¥
+                    {(unitPrice * qty).toLocaleString()}
+                  </Typography>
                 ) : (
                   <Typography
                     variant="body2"
@@ -130,7 +135,6 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
               </Typography>
             )}
 
-            {/* ─────────────── オプション ─────────────── */}
             <Divider sx={{ my: 1 }} />
             <Typography
               variant="subtitle1"
@@ -140,10 +144,11 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
             </Typography>
 
             {order.options.length > 0 &&
-            order?.options?.some((option) => option.id !== 1) ? (
+            order.options.some((option) => option.id !== 1) ? (
               <Box sx={{ ml: 2, mt: 1 }}>
                 {order.options.map((option, idx) => (
                   <Stack
+                    key={idx}
                     direction="row"
                     flexWrap="wrap"
                     useFlexGap
@@ -172,7 +177,6 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
               </Typography>
             )}
 
-            {/* ─────────────── 小計 ─────────────── */}
             <Divider sx={{ my: 1.5 }} />
             <Box sx={{ ml: 2 }}>
               <Typography variant="body1" fontWeight="bold">
@@ -186,8 +190,6 @@ export default function TotalCalculation({ orders }: TotalCalculationProps) {
           </Box>
         );
       })}
-
-      {/* ─────────────── 総合計 ─────────────── */}
 
       <Paper
         sx={(theme) => ({
