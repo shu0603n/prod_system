@@ -1,6 +1,7 @@
 # デプロイ
 
 `npm install -g vercel`
+`vercel --token <トークン>`
 `vercel login`
 `vercel`
 
