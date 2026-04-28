@@ -83,7 +83,6 @@ export default function BottleMakerOriShan() {
     <>
       <Head>
         <title>オリジナルシャンパンラベルデザイナー</title>
-        <meta name="viewport" content="width=1280" />
         <link rel="stylesheet" href="/bottle-maker/style.css" />
         <style>{`
           #bottleContainer { height: 70rem; }
@@ -107,38 +106,9 @@ export default function BottleMakerOriShan() {
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 0 8rem;
+            padding: 2rem 4rem;
             width: 100%;
-            height: 38rem;
-          }
-
-          /* ── 常に横並び（レスポンシブ無効化） ── */
-          .os-root .control__inner {
-            flex-direction: row !important;
-            align-items: center !important;
-            gap: 4rem !important;
-          }
-          .os-root .control__ttl > br {
-            display: inline !important;
-          }
-          .os-root .control__line {
-            width: 2px !important;
-            height: 12.2rem !important;
-            max-width: none !important;
-          }
-          .os-root .control__number--1,
-          .os-root .control__number--2,
-          .os-root .control__number--3 {
-            height: 17.3rem !important;
-          }
-          .os-root .control__box-inner {
-            flex-direction: row !important;
-            align-items: center !important;
-            gap: 4rem !important;
-          }
-          .os-root .control__ttl {
-            font-size: 3.4rem !important;
-            line-height: 1.6 !important;
+            height: auto;
           }
 
           /* ── テキスト ── */
@@ -246,10 +216,7 @@ export default function BottleMakerOriShan() {
                 </p>
               </div>
             </div>
-            <p
-              className="control__txt--small"
-              style={{ padding: "0 8rem 2rem" }}
-            >
+            <p className="control__txt--small">
               こちらの画像はイメージ画像となります。実際の仕上がりとは異なる場合もあるので詳しくはLINE公式よりお問い合わせください。
             </p>
           </Panel>
