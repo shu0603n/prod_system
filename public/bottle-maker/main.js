@@ -158,7 +158,10 @@ function setupThreeJS() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xf0f0f0);
 
-  camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+  const initW = container ? container.clientWidth : canvas.clientWidth;
+  const initH = container ? container.clientHeight : canvas.clientHeight;
+
+  camera = new THREE.PerspectiveCamera(75, initW / initH, 0.1, 1000);
   camera.position.set(0, 0, 5);
 
   renderer = new THREE.WebGLRenderer({
@@ -166,7 +169,7 @@ function setupThreeJS() {
     antialias: true,
     alpha: true,
   });
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  renderer.setSize(initW, initH, false);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   if ("outputColorSpace" in renderer && THREE.SRGBColorSpace) {
@@ -821,15 +824,15 @@ function hideLoading() {
 
 // カメラのアスペクト比、レンダラーのサイズを決定
 function onWindowResize() {
-  const canvas = document.getElementById("bottleCanvas");
-  if (!canvas || !camera || !renderer) return;
+  const container = document.getElementById("bottleContainer");
+  if (!container || !camera || !renderer) return;
 
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
+  const width = container.clientWidth;
+  const height = container.clientHeight;
 
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
-  renderer.setSize(width, height);
+  renderer.setSize(width, height, false);
 }
 
 // アニメーション
